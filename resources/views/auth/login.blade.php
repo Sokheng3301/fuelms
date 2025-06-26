@@ -3,7 +3,7 @@
 <!--begin::Head-->
 
 <head>
-    @include('backend.componant.meta')
+    @include('backend.components.meta')
     <title>FuelMS | {{__("Login")}}</title>
     <style>
         #fix_boday{
