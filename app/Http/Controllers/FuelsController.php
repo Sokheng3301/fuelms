@@ -11,7 +11,8 @@ class FuelsController extends Controller
      */
     public function index()
     {
-        return view('backend.fuel.index');
+        $data['activeMenu'] = 'fuelMange';
+        return view('backend.fuel.index', $data);
     }
 
     /**
@@ -19,7 +20,8 @@ class FuelsController extends Controller
      */
     public function create()
     {
-        //
+        $data['activeMenu'] = 'fuelCreate';
+        return view('backend.fuel.form', $data);
     }
 
     /**

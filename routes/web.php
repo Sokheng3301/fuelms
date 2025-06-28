@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FuelsController;
+use App\Http\Controllers\FuelTypeandPriceController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SetlangController;
 use Illuminate\Support\Facades\Route;
@@ -23,7 +24,7 @@ Route::get('/', function () {
 
 
 
-Route::middleware(['lang', 'auth'])->group(function () {
+Route::middleware(['lang', 'auth', 'active.menu'])->group(function () {
 
     Route::get('welcome', function () {
         return view('welcome');
@@ -45,6 +46,7 @@ Route::middleware(['lang', 'auth'])->group(function () {
     })->name('home');
 
     Route::resource('fuel', FuelsController::class);
+    Route::resource('fuel-type-price', FuelTypeandPriceController::class);
     // Route::get('fuel.asp', [FuelsController::class,'index'])->name('fuel.asp.index');
 
 

@@ -20,15 +20,15 @@
         <nav class="mt-2">
             <!--begin::Sidebar Menu-->
             <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu" data-accordion="false">
-                <li class="nav-item menu-open">
-                    <a href="{{ route('home') }}" class="nav-link">
+                <li class="nav-item">
+                    <a href="{{ route('home') }}" class="nav-link {{ isActive('home') }}">
                         <i class="nav-icon bi bi-speedometer"></i>
                         <p>{{__("Dashboard")}}</p>
                     </a>
                 </li>
 
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
+                <li class="nav-item {{ menuOpen('fuel.create') . menuOpen('fuel.index')}}" id="fuelInventory">
+                    <a href="#" class="nav-link main-link {{ isActive('fuel.create') . isActive('fuel.index')}}">
                         <i class="nav-icon bi bi-fuel-pump"></i>
                         <p>
                             {{ __('Fuel Inventory') }}
@@ -37,13 +37,13 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="./widgets/small-box.html" class="nav-link">
+                            <a href="{{ route('fuel.create') }}" class="nav-link {{ isActive('fuel.create')}}">
                                 <i class="nav-icon bi bi-circle"></i>
                                 <p>{{__('Add new')}}</p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="{{ route('fuel.index') }}" class="nav-link">
+                        <li class="nav-item manage">
+                            <a href="{{ route('fuel.index') }}" class="nav-link {{ isActive('fuel.index')}}">
                                 <i class="nav-icon bi bi-circle"></i>
                                 <p>{{__('Manage')}}</p>
                             </a>
@@ -51,8 +51,8 @@
                     </ul>
                 </li>
 
-                <li class="nav-item">
-                    <a href="" class="nav-link">
+                <li class="nav-item" id="fuelType">
+                    <a href="{{ route('fuel-type-price.index') }}" class="nav-link {{ isActive('fuel-type-price.index') . isActive('fuel-type-price.create') }}">
                         <i class="nav-icon bi bi-tags-fill"></i>
                         <p>{{__("Todays Fuel Price")}}</p>
                     </a>

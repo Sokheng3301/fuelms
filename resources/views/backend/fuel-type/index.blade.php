@@ -1,6 +1,6 @@
 @extends('backend.layout.master')
 @section('title')
-    {{ __('Fuel Inventory') }}
+    {{ __('Todays Fuel Price') }}
 @endsection
 @section('content')
     <!--begin::Row-->
@@ -11,13 +11,13 @@
             <!-- DIRECT CHAT -->
             <div class="card direct-chat direct-chat-primary mb-4">
                 <div class="card-header">
-                    <h3 class="card-title">{{ __('Fuel Inventory List') }}</h3>
+                    <h3 class="card-title">{{ __('Todays Fuel Price') }}</h3>
                     <div class="card-tools">
                         <button type="button" class="btn btn-tool" data-lte-toggle="card-collapse">
                             <i data-lte-icon="expand" class="bi bi-plus-lg"></i>
                             <i data-lte-icon="collapse" class="bi bi-dash-lg"></i>
                         </button>
-                        <a href="{{ route('fuel.create') }}" class="ui button small blue"><i class="bi bi-plus-circle-fill icon"></i>{{ __('Add new') }}</a>
+                        <a href="{{ route('fuel-type-price.create') }}" class="ui button small blue"><i class="bi bi-plus-circle-fill icon"></i>{{ __('Add new') }}</a>
                     </div>
                 </div>
                 <!-- /.card-header -->
@@ -25,7 +25,7 @@
                     <div class="row">
                         <div class="col-md-12 mb-4">
                             <div class="ui buttons tiny">
-                                <button class="ui button"  id="printButton"><i class="bi bi-printer icon"></i>{{ __('Print') }}</button>
+                                <button class="ui button" id="printButton"><i class="bi bi-printer icon"></i>{{ __('Print') }}</button>
                                 <button class="ui button"><i class="bi bi-file-pdf icon"></i>{{ __('PDF') }}</button>
                                 <button class="ui button"><i class="bi bi-file-earmark-spreadsheet icon"></i>{{ __('Excel') }}</button>
                             </div>
@@ -38,36 +38,44 @@
                                     <tr>
                                         <th scope="col" class="text-start">{{__('S.R')}}</th>
                                         <th scope="col">{{__('Fuel Type')}}</th>
-                                        <th scope="col">{{__('Fuel Code')}}</th>
-                                        <th scope="col">{{__('Supplier')}}</th>
-                                        <th scope="col">{{__('Quantity')}}</th>
-                                        <th scope="col" class="text-start">{{__('Purchase Price')}}</th>
-                                        <th scope="col" colspan="2" class="text-start">{{__('Date')}}</th>
-                                        {{-- <th scope="col">{{__('Actions')}}</th> --}}
+                                        <th scope="col" class="text-start">{{__('Fuel Price')}}</th>
+                                        <th scope="col" class="text-start">{{__('Editor Name')}}</th>
+                                        <th scope="col" class="text-start" colspan="2">{{__('Edit Date')}}</th>
+                                        {{-- <th scope="col" class="text-end">{{__('Actions')}}</th> --}}
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @for($i=1; $i<=30; $i++)
+                                    @php
+                                        $i = 1;
+                                    @endphp
+                                    @foreach($fuels as $fuel)
                                         <tr>
                                             <th scope="row" class="text-center">{{$i}}</th>
-                                            <td>Mark</td>
-                                            <td>#Otto</td>
-                                            <td>@mdo</td>
-                                            <td>1000<span class="ps-2 text-muted">{{__('L')}}</span></td>
-                                            <td class="text-start"><i class="bi bi-currency-dollar icon text-muted"></i>2000</td>
-                                            <td class="text-start text-muted">{{\Carbon\Carbon::parse(now())->format('d.m.Y - h:i:s A')}}</td>
+                                            <td class="text">
+                                                <p>{{$fuel->fuel_type_kh}}</p>
+                                                <p class="text-capitalize">{{$fuel->fuel_type_en}}</p>
+                                            </td>
+                                            <td class="text-start"><i class="bi bi-currency-dollar icon text-muted"></i>{{$fuel->today_price}}</td>
+                                            <td class="text">
+                                                <p>{{$fuel->user->fullname_kh}}</p>
+                                                <p class="text-capitalize">{{$fuel->user->fullname_en}}</p>
+                                            </td>
+                                            <td>{{Carbon\Carbon::parse($fuel->updated_at)->format('d m Y - h:i:s A')}}</td>
                                             <td class="text-end">
+                                                <div class="ui mini label text-start {{ $fuel->visibility == 1 ? 'green' : 'red' }}">{{ $fuel->visibility == 1 ? __('Show') : __("Hidden")}}</div>
                                                 <div class="ui scrolling pointing icon button nimi p-1 circular dropdown dropdown{{ $i }}">
                                                     <i class="bi bi-three-dots-vertical icon"></i>
                                                     <div class="menu left">
-                                                        <div class="item"><i class="bi bi-eye-fill icon"></i>{{__("About Fuel")}}</div>
-                                                        <div class="item"><i class="bi bi-pencil-square icon"></i>{{__("Edit Fuel")}}</div>
-                                                        <div class="item"><i class="bi bi-trash-fill icon"></i>{{__("Remove Fuel")}}</div>
+                                                        <a href="{{ route('fuel-type-price.edit', $fuel->id) }}" class="item"><i class="bi bi-pencil-square icon"></i>{{__("Edit Fuel")}}</a>
+                                                        <div class="item"><i class="bi bi-eye-slash-fill icon"></i>{{__("Hide Fuel")}}</div>
                                                     </div>
                                                 </div>
                                             </td>
                                         </tr>
-                                    @endfor
+                                        @php
+                                            $i++;
+                                        @endphp
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -84,17 +92,15 @@
 @endsection
 
 @section('js')
-    <script>
-        $('.ui.dropdown')
-        .dropdown()
-        ;
-        $(document).ready(function () {
-            // $('nav ul li a').removeClass('active'); // Remove 'active' class from all links
-            // $('#fuelInventory .main-link').addClass('active'); // Add 'menu-open' class to #fuelInventory
-            // $('#fuelInventory').addClass('menu-open'); // Add 'menu-open' class to #fuelInventory
-            // $('#fuelInventory .manage a').addClass('active'); // Add 'active' class to .manage under #fuelInventory
-        });
-
-    </script>
+    @if ($fuels != null)
+        <script>
+            @php
+                $i = 1;
+            @endphp
+            @foreach ($fuels as $index => $student)
+                $(".ui.dropdown{{ $i++ }}").dropdown();
+            @endforeach
+        </script>
+    @endif
 
 @endsection

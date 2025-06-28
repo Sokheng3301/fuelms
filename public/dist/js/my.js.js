@@ -58,6 +58,10 @@ $('form').submit(function() {
     }, 3000);
 });
 
+
+$('#printButton').on('click', function(){
+    window.print();
+});
 // $(document).ready(function () {
 //     $('form select, form input').attr('disabled', true).css('cursor', 'not-allowed');
 // });

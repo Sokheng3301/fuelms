@@ -315,9 +315,12 @@
                     <!--begin::Row-->
                     <div class="row">
                         <div class="col-sm-6">
-                            <h3 class="mb-0">@yield('title') <small
+                            <h3 class="mb-0">@yield('title')
+                                {{-- <small
                                     class="ps-1 text-muted fw-normal text-capitalize"
-                                    style="font-size: 12px">{{ env('APP_NAME') }}</small></h3>
+                                    style="font-size: 12px">{{ env('APP_NAME') }}
+                                </small> --}}
+                            </h3>
                         </div>
 
                         <div class="col-sm-6">
@@ -409,7 +412,7 @@
                     }
                 },
                 "lengthMenu": [5, 10, 25, 50, 75, 100, -1], // Options for the dropdown
-                "pageLength": 10 // Default number of records to show
+                "pageLength": 25 // Default number of records to show
             });
 
 
@@ -463,6 +466,29 @@
     @endif
     <script>
         $(document).ready(function() {
+
+            @if(session()->has('success'))
+                Swal.fire({
+                    title: "{{ session('success') }}",
+                    icon: "success",
+                    draggable: true,
+                    showConfirmButton: false,
+                    timer : 3000
+                });
+            @endif
+
+            @if(session()->has('error'))
+                Swal.fire({
+                    title: "{{ session('error') }}",
+                    icon: "error",
+                    draggable: true,
+                    showConfirmButton: false,
+                    timer : 3000
+                });
+            @endif
+
+
+
             // Show the button when scrolled down 200px
             // $('#scrollTop').hide();
 
@@ -480,7 +506,7 @@
             $('#scrollTop').click(function() {
                 $('html, body').animate({
                     scrollTop: 0
-                }, 600);
+                }, 200);
             });
         });
 

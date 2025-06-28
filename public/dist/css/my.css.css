@@ -67,13 +67,26 @@ textarea:hover {
 }
 
 @media screen and (max-width: 768px) {
-    .myresponsive_table {
+    .myresponsive {
         width: 1000px !important;
-        background-color: unset !important;
+        background-color: transparent !important;
+        overflow-x: scroll !important;
+    }
+    .table-responsive::-webkit-scrollbar-thumb{
+        background-color: transparent !important;
+        height: 1px !important;
+    }
+    .table-responsive::-webkit-scrollbar-track{
+        background-color: transparent !important;
+    }
+}
+@media screen and (min-width: 768px) {
+    .table-responsive{
+        overflow: visible !important;
     }
 }
 #myTable thead th:first-child {
-    width: 5% !important;
+    width: 6% !important;
 }
 table td.text p{
     margin: 0;
@@ -153,3 +166,4 @@ table td.text p{
 .bg-profile{
     background-color: darkgreen !important;
 }
+
